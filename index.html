@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY KIDS | A Film by Luke Harris</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #f0f0f0;
+            --accent-color: #8b0000;
+            --accent-glow: rgba(139, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            cursor: crosshair;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            opacity: 0.2;
+            z-index: -1;
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.4; }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .hero {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(5,5,5,0.8) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            animation: fadeOutText 3s forwards 7s ease-in-out;
+        }
+
+        @keyframes fadeOutText {
+            0% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            letter-spacing: 0.4em;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cinematicReveal 3s forwards 0.5s ease-out;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.9);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
+            letter-spacing: 0.3em;
+            opacity: 0;
+            color: #ddd;
+            animation: cinematicReveal 3s forwards 2s ease-out;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        @keyframes cinematicReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sound-toggle {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ccc;
+            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .sound-toggle:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--accent-color));
+            animation: scrollLine 2s infinite;
+            z-index: 1;
+        }
+
+        @keyframes scrollLine {
+            0% { transform: translate(-50%, -100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(-50%, 100%); opacity: 0; }
+        }
+
+        .section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            background-color: var(--bg-color);
+        }
+
+        .teaser-text {
+            font-size: clamp(1.2rem, 2vw, 2rem);
+            line-height: 1.6;
+            color: #ddd;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .details-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+            padding: 20px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            font-family: 'Cinzel', serif;
+            color: #aaa;
+            letter-spacing: 0.1em;
+        }
+
+        .text-body {
+            line-height: 1.8;
+            color: #bbb;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 450px;
+            background-color: #0a0a0a;
+            border: 1px solid #222;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.2em;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            text-align: left;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .text-body {
+                text-align: left;
+            }
+        }
+
+        .cta-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--accent-color);
+            background: transparent;
+            color: var(--text-color);
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: #fff;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+            margin-top: 50px;
+            background-color: var(--bg-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <section class="hero">
+        <video id="hero-video" class="hero-video" autoplay loop muted playsinline poster="lily-car.jpg">
+            <source src="MYKIDS_SizzleReel_Final.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1>MY KIDS</h1>
+            <p>A Film By Luke Harris</p>
+        </div>
+
+        <button id="sound-toggle" class="sound-toggle">Sound Off</button>
+
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <section class="section">
+        <p class="teaser-text fade-up">
+            A struggling mother finds out that her children have committed a sin in God's eyes, but can she bring herself to protect them?
+        </p>
+
+        <div class="details-bar fade-up">
+            <span>GENRE: Psychological Drama</span>
+            <span>TONE: Thriller / Horror</span>
+            <span>RUNTIME: 85 Mins</span>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="fade-up" style="margin-bottom: 30px;">The Story</h2>
+        <div class="image-placeholder fade-up">
+            <img src="lily-car.jpg" alt="Lily looking in rearview mirror" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <p class="text-body fade-up">
+            Lily, a Black mother from the South and a pillar in her Christian community, is raising her two children, 16-year-old Sophia and 14-year-old William, three years after the loss of her husband. This Christmas marks their first visit to Grandma's house to reconnect with family since his passing.
+        </p>
+        <p class="text-body fade-up">
+            However, just before the trip, Lily uncovers a troubling secret about her children. As they head to Grandma's, Lily must navigate how to handle the revelation and confront the truth, all while striving to keep the religious and family bonds intact.
+        </p>
+    </section>
+
+    <section class="section">
+        <h2 class="fade-up" style="margin-bottom: 30px;">The Framework</h2>
+        <div class="two-column fade-up">
+            <div>
+                <h4 style="margin-bottom: 15px; color: var(--text-color);">Faith & Morality</h4>
+                <p class="text-body" style="text-align: left;">
+                    Religion is the framework of My Kids, shaping the family's identity and their community's moral framework. The taboo acts committed by the children disrupt the delicate balance between faith and reality, challenging the traditional definitions of good and evil. The film delves into the fragility of faith when tested by the unthinkable, exposing the tension between outward sanctity and the hidden darkness that lies within.
+                </p>
+            </div>
+            <div class="image-placeholder" style="height: 100%; margin: 0;">
+                <img src="church.jpg" alt="Church interior" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="fade-up" style="margin-bottom: 40px;">Director's Vision</h2>
+        
+        <div class="two-column fade-up">
+            <div class="image-placeholder" style="height: 100%; margin: 0;">
+                <img src="director.jpg" alt="Director Luke Harris" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+                <p class="text-body" style="font-style: italic; border-left: 2px solid var(--accent-color); padding-left: 20px;">
+                    "How far would you go for your kids? Is love truly unconditional, or does it have a limit? These questions inspired My Kids. I began imagining what it would feel like to learn the worst possible secret about your children and be forced to grapple with that truth during the happiest time of the year: Christmas.
+                    <br><br>
+                    My Kids is a dark psychological horror-thriller centered on Lily, a devout Black Christian mother whose faith guides every aspect of her life. Beneath her devotion, however, lie secrets of her own. When Lily discovers that her children are committing what she believes to be an unholy sin, her world begins to unravel. As she struggles to reconcile her love for her children with her deeply held beliefs, she is forced to confront her own sins and hypocrisies.
+                    <br><br>
+                    At its core, My Kids is a story about faith, family, and the terrifying complexity of love. In the end, Lily must answer a question that haunts every parent: How far are you willing to go for your children even if it means going to Hell?"
+                </p>
+                <h4 style="margin-top: 20px;">— Luke Harris</h4>
+            </div>
+        </div>
+
+        <div class="fade-up" style="margin-top: 50px; text-align: left;">
+            <p class="text-body">
+                Luke Harris is a Director/Writer from USC School of Cinematic Arts where he also served as the President of African American Cinema Society founded by John Singleton. His accolades include winning the 2022 #CreateLouisiana French Cultural Film Grant for his film "Tambou" and being named a Finalist for HBO's 2025 Short Film Award.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="fade-up">Bring the Film to Life</h2>
+        <p class="fade-up" style="margin: 20px 0; color: #999; font-size: 1.2rem;">Join us in bringing this uncompromising vision to the screen.</p>
+        <div class="cta-container fade-up">
+            <a href="https://www.paypal.com/donate/?hosted_button_id=ZAPR4MV9TNLSJ" target="_blank" rel="noopener noreferrer" class="btn">Invest in My Kids</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Written & Directed by Luke Harris</p>
+        <p>Contact: <a href="mailto:mykidsthemovie@gmail.com">mykidsthemovie@gmail.com</a></p>
+        <p>&copy; 2026 Lucky Luke Films. All Rights Reserved. <span style="margin-left: 8px;">| Site Design by Scott Johnson</span></p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const faders = document.querySelectorAll('.fade-up');
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+
+            const heroVideo = document.getElementById('hero-video');
+            const soundToggleBtn = document.getElementById('sound-toggle');
+
+            soundToggleBtn.addEventListener('click', () => {
+                if (heroVideo.muted) {
+                    heroVideo.muted = false;
+                    soundToggleBtn.textContent = 'Sound On';
+                } else {
+                    heroVideo.muted = true;
+                    soundToggleBtn.textContent = 'Sound Off';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
